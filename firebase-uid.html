@@ -18,7 +18,8 @@ v2 vs v3 returns different uid
     </style>
     <firebase-auth id="v2Firebase"
                    user="{{user}}"
-                   location="huubhr.firebaseio.com">
+                   location="huubhr.firebaseio.com"
+                   provider="google">
     </firebase-auth>
     <google-signin id="googleAuth"
                    scopes="https://www.googleapis.com/auth/calendar"
@@ -50,9 +51,6 @@ v2 vs v3 returns different uid
         var params = {token: accessToken};
         firebaseElement.login(params); //calls authWithOAuthToken
         console.log('v2 Login')
-      },
-      v3Login: function() {
-        console.log('v3 Login')
       },
       signOut: function() {
         var firebaseElement = document.querySelector('#v2Firebase');
