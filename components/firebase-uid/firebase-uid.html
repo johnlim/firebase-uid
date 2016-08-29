@@ -1,0 +1,62 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../google-signin/google-signin.html">
+<link rel="import" href="../firebase-element/firebase-auth.html">
+<!--
+`firebase-uid`
+v2 vs v3 returns different uid
+
+@demo demo/index.html 
+-->
+
+<dom-module id="firebase-uid">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <firebase-auth id="v2Firebase"
+                   user="{{user}}"
+                   location="huubhr.firebaseio.com"
+                   provider="google">
+    </firebase-auth>
+    <google-signin id="googleAuth"
+                   scopes="https://www.googleapis.com/auth/calendar"
+                   client-id="299373002757-g8037c7m6r1eq0iji4l4mne0qpi7ap1q.apps.googleusercontent.com"
+                   on-google-signin-success="v2Signin"
+                   on-google-signout-attempted="signOut">
+    </google-signin>
+    <h3>UID: {{user.uid}}</h3>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'firebase-uid',
+
+      properties: {
+        prop1: {
+          type: String,
+          value: 'firebase-uid',
+        },
+      },
+      ready: function() {
+        this.$.googleAuth.labelSignin = "V2 Login"
+//        this.$.v2Firebase.
+      },
+      v2Signin: function() {
+        var accessToken = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().access_token;
+        var firebaseElement = document.querySelector('#v2Firebase');
+        var params = {token: accessToken};
+        firebaseElement.login(params); //calls authWithOAuthToken
+        console.log('v2 Login')
+      },
+      signOut: function() {
+        var firebaseElement = document.querySelector('#v2Firebase');
+        firebaseElement.logout();
+      }
+
+    });
+  </script>
+</dom-module>
